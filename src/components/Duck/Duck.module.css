@@ -1,0 +1,51 @@
+.duck {
+  position: absolute;
+  cursor: crosshair;
+  z-index: 5;
+}
+
+.duckImage {
+  width: 120px;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+.flipped {
+  transform: scaleX(-1);
+}
+
+.flyLeftToRight {
+  animation-name: flyLTR;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.flyRightToLeft {
+  animation-name: flyRTL;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.hit {
+  animation-play-state: paused;
+  cursor: default;
+}
+
+@keyframes flyLTR {
+  from {
+    left: -120px;
+  }
+  to {
+    left: calc(100vw + 120px);
+  }
+}
+
+@keyframes flyRTL {
+  from {
+    left: calc(100vw + 120px);
+  }
+  to {
+    left: -120px;
+  }
+}

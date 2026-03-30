@@ -6,12 +6,19 @@ import { RootState } from "@/store/gameStore";
 
 // Re-create the slice reducer inline to avoid singleton store issues
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { DuckDirection } from "@/store/gameStore";
+import type { DuckDirection, DuckStatus } from "@/store/gameStore";
 
-const initialDuck = {
-  status: "idle" as const,
+interface DuckState {
+  status: DuckStatus;
+  startY: number;
+  direction: DuckDirection;
+  speed: number;
+}
+
+const initialDuck: DuckState = {
+  status: "idle",
   startY: 50,
-  direction: "left-to-right" as DuckDirection,
+  direction: "left-to-right",
   speed: 5000,
 };
 
@@ -30,7 +37,7 @@ const gameSlice = createSlice({
     ) => {
       state.rounds += 1;
       state.isRoundActive = true;
-      state.duck = { status: "flying", ...action.payload };
+      state.duck = { status: "flying" as const, ...action.payload };
     },
     hitDuck: (state) => {
       state.hits += 1;
@@ -62,10 +69,10 @@ export function renderWithStore(
   ui: React.ReactElement,
   {
     preloadedState,
-    store = createTestStore(preloadedState),
     ...renderOptions
   }: { preloadedState?: PreloadedGameState } & Omit<RenderOptions, "wrapper"> = {}
 ) {
+  const store = createTestStore(preloadedState);
   function Wrapper({ children }: { children: React.ReactNode }) {
     return <Provider store={store}>{children}</Provider>;
   }
